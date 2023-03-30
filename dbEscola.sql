@@ -144,6 +144,9 @@ go
 -- PROCEDURES
 
 go
+-- VIEWS
+
+go
 -- INSERTS
 insert into nivel_ensino values ('fundamental 1')
 insert into nivel_ensino values ('fundamental 2')

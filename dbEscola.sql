@@ -27,7 +27,7 @@ go
 create table serie_nivel_ensino(
 	serie_ensino_id int,
 	nivel_ensino_id int,
-	nome_relacao varchar(255) not null,
+	nome_relacao varchar(255) null,
 	primary key (serie_ensino_id, nivel_ensino_id),
 	foreign key (serie_ensino_id) references serie_ensino(id),
 	foreign key (nivel_ensino_id) references nivel_ensino(id),
@@ -139,7 +139,17 @@ create table aluno_nota(
 )
 go
 -- TRIGGERS
-
+create trigger nome_relacao_serie_nivel_ensino
+on serie_nivel_ensino
+instead of insert
+as
+begin
+	insert into serie_nivel_ensino
+		select i.serie_ensino_id, i.nivel_ensino_id, (s.serie_nome + ' do ' + n.nivel_ensino_nome)
+			from inserted i 
+				inner join serie_ensino s on s.id = i.serie_ensino_id 
+				inner join nivel_ensino n on n.id = i.nivel_ensino_id;
+end;
 go
 -- PROCEDURES
 
@@ -178,3 +188,4 @@ insert into materia values ('química')
 insert into materia values ('física')
 insert into materia values ('literatura')
 insert into materia values ('redação')
+go
